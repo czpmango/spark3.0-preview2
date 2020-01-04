@@ -153,7 +153,7 @@ object MyIntegratedUDFUtils extends SQLHelper {
             s"f = open('$path', 'wb');" +
             "f.write(CloudPickleSerializer().dumps((" +
             "lambda x: x.apply(" +
-            "lambda v: None if v is None else str(int(v)+3)), StringType())))"),
+            "lambda v: None if v is None else str(int(v)+2)), StringType())))"),
         None,
         "PYTHONPATH" -> s"$pysparkPythonPath:$pythonPath").!!
       binaryPandasFunc = Files.readAllBytes(path.toPath)
