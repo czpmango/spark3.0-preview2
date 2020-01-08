@@ -1174,6 +1174,24 @@ public interface SqlBaseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPredicate(SqlBaseParser.PredicateContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#myexpressionlist1}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMyexpressionlist1(SqlBaseParser.Myexpressionlist1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#myexpressionlist2}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMyexpressionlist2(SqlBaseParser.Myexpressionlist2Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#spatialpredicated}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code valueExpressionDefault}
 	 * labeled alternative in {@link SqlBaseParser#valueExpression}.
 	 * @param ctx the parse tree

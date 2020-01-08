@@ -1,7 +1,9 @@
 
 package org.apache.spark.sql
 
-import org.apache.spark.sql.MyIntegratedUDFUtils.{TestPythonUDF, TestScalarPandasUDF, TestScalaUDF}
+import org.apache.spark.sql.MyIntegratedUDFUtils.{TestPythonUDF, TestScalaUDF, TestScalarPandasUDF}
+import org.apache.spark.sql.catalyst.parser.{CatalystSqlParser, ParserInterface}
+import org.apache.spark.sql.internal.SQLConf
 
 object pyUdfDemo {
 
@@ -11,61 +13,37 @@ object pyUdfDemo {
 
   def main(args: Array[String]): Unit = {
 
-    val spark = SparkSession
-      .builder
-      .appName("pyUdf test demo")
-      .getOrCreate()
+        type ParserBuilder = (SparkSession, ParserInterface) => ParserInterface
+        type ExtensionsBuilder = SparkSessionExtensions => Unit
+
+        val parserBuilder: ParserBuilder = (_, _) => CatalystSqlParser
+        val extBuilderParser: ExtensionsBuilder = { e => e.injectParser(parserBuilder)}
+        val spark = SparkSession.builder.appName("knn join demo")
+           .withExtensions(extBuilderParser)
+          .master("local").getOrCreate()
+//    val spark = SparkSession
+//      .builder
+//      .appName("pyUdf test demo")
+//      .getOrCreate()
 
     import spark.implicits._
 
-    val data = (0 until 10000*100).toList.toSeq
+   // val data1 = (0 until 12).toList.toSeq
+    val df1 = spark.read.csv("/home/czp/csv/table1.csv").toDF()
+    df1.createOrReplaceTempView("t1")
 
-    val df = data
-      .toDF("a")
+    val df2 = spark.read.csv("/home/czp/csv/table2.csv").toDF()
+    df2.createOrReplaceTempView("t2")
 
-    //    val df = spark.read.csv("/home/czp/csv/t2.csv")
+//    spark.sql("select * from t1").show()
+//    spark.sql("select * from t2").show()
+    val res =
+//    spark.sql("select * from t1 knn join t2 on t1.a1=t2.b1")
+// spark.sql("select * from t1 join t2 on t1._c1=t2._c1")
+spark.sql("select * from t1 knn join t2 using POINT (t2._c1, t2._c2) " +
+                  "knnPred (POINT (t1._c1, t1._c2), 5)")
+    res.show()
+    res.explain()
 
-    spark.udf.register(scalaUDF.name, scalaUDF.udf) // register only package sql
-    spark.udf.registerPython(pythonUDF.name, pythonUDF.udf) // register only package sql
-    spark.udf.registerPython(pandasUDF.name, pandasUDF.udf) // register only package sql
-
-    df.createOrReplaceTempView("table")
-    spark.sql("cache table table")
-
-// API
-    val start = System.nanoTime()
-    val res = df.select("a")
-    val end = System.nanoTime()
-    val timecost = (end - start)/1000000
-    print("native expr time cost :" + timecost + "ms.\n")
-
-// native expr
-    val start0 = System.nanoTime()
-    val res0 = spark.sql("select a from table").collect()
-    val end0 = System.nanoTime()
-    val timecost0 = (end0 - start0)/1000000
-    print("native expr time cost :" + timecost0 + "ms.\n")
-
-// scala udf
-    val start1 = System.nanoTime()
-    val res1 = spark.sql("select scalaUDF(a) from table").collect()
-    val end1 = System.nanoTime()
-    val timecost1 = (end1 - start1)/1000000
-    print("scala udf time cost :" + timecost1 + "ms.\n")
-
-    // python udf
-    val start2 = System.nanoTime()
-    val res2 = spark.sql("select pythonUDF(a) from table").collect()
-    val end2 = System.nanoTime()
-    val timecost2 = (end2 - start2)/1000000
-    print("python udf time cost :" + timecost2 + "ms.\n")
-
-    // py pandas udf
-    val start3 = System.nanoTime()
-    val res3 = spark.sql("select pandasUDF(a) from table").collect()
-    val end3 = System.nanoTime()
-    val timecost3 = (end3 - start3)/1000000
-    print("pandas udf time cost :" + timecost3 + "ms.\n")
-//    res.explain(true)
   }
 }

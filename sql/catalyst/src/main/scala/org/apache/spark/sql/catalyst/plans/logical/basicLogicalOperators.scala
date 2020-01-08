@@ -993,3 +993,25 @@ case class CollectMetrics(
 
   override def output: Seq[Attribute] = child.output
 }
+// defined by czp for knn demo
+case class SpatialJoin(left: LogicalPlan, right: LogicalPlan, joinType: SpatialJoinType,
+                       condition: Option[Expression]) extends BinaryNode {
+  override def output: Seq[Attribute] = {
+    joinType match {
+      case KNNJoin =>
+        left.output ++ right.output
+      case _ =>
+        left.output ++ right.output
+    }
+  }
+
+  def selfJoinResolved: Boolean = left.outputSet.intersect(right.outputSet).isEmpty
+
+  // Joins are only resolved if they don't introduce ambiguous expression ids.
+  override lazy val resolved: Boolean = {
+    childrenResolved &&
+      expressions.forall(_.resolved) &&
+      selfJoinResolved &&
+      condition.forall(_.dataType == BooleanType)
+  }
+}

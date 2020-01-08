@@ -2152,6 +2152,42 @@ public class SqlBaseBaseListener implements SqlBaseListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMyexpressionlist1(SqlBaseParser.Myexpressionlist1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMyexpressionlist1(SqlBaseParser.Myexpressionlist1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMyexpressionlist2(SqlBaseParser.Myexpressionlist2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMyexpressionlist2(SqlBaseParser.Myexpressionlist2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterValueExpressionDefault(SqlBaseParser.ValueExpressionDefaultContext ctx) { }
 	/**
 	 * {@inheritDoc}

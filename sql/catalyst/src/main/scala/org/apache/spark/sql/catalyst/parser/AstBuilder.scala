@@ -18,30 +18,29 @@
 package org.apache.spark.sql.catalyst.parser
 
 import java.util.Locale
+
 import javax.xml.bind.DatatypeConverter
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
-
 import org.antlr.v4.runtime.{ParserRuleContext, Token}
 import org.antlr.v4.runtime.tree.{ParseTree, RuleNode, TerminalNode}
-
 import org.apache.spark.internal.Logging
 import org.apache.spark.sql.AnalysisException
 import org.apache.spark.sql.catalyst.{FunctionIdentifier, TableIdentifier}
 import org.apache.spark.sql.catalyst.analysis._
 import org.apache.spark.sql.catalyst.catalog.{BucketSpec, CatalogStorageFormat}
-import org.apache.spark.sql.catalyst.expressions._
+import org.apache.spark.sql.catalyst.expressions.{PredKnn, _}
 import org.apache.spark.sql.catalyst.expressions.aggregate.{First, Last}
 import org.apache.spark.sql.catalyst.parser.SqlBaseParser._
-import org.apache.spark.sql.catalyst.plans._
-import org.apache.spark.sql.catalyst.plans.logical._
+import org.apache.spark.sql.catalyst.plans.{KNNJoin, _}
+import org.apache.spark.sql.catalyst.plans.logical.{SpatialJoin, _}
 import org.apache.spark.sql.catalyst.util.DateTimeUtils.{getZoneId, stringToDate, stringToTimestamp}
 import org.apache.spark.sql.catalyst.util.IntervalUtils
 import org.apache.spark.sql.catalyst.util.IntervalUtils.IntervalUnit
 import org.apache.spark.sql.connector.catalog.SupportsNamespaces
 import org.apache.spark.sql.connector.catalog.TableChange.ColumnPosition
-import org.apache.spark.sql.connector.expressions.{ApplyTransform, BucketTransform, DaysTransform, Expression => V2Expression, FieldReference, HoursTransform, IdentityTransform, LiteralValue, MonthsTransform, Transform, YearsTransform}
+import org.apache.spark.sql.connector.expressions.{ApplyTransform, BucketTransform, DaysTransform, FieldReference, HoursTransform, IdentityTransform, LiteralValue, MonthsTransform, Transform, YearsTransform, Expression => V2Expression}
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.types._
 import org.apache.spark.unsafe.types.{CalendarInterval, UTF8String}
@@ -954,21 +953,28 @@ class AstBuilder(conf: SQLConf) extends SqlBaseBaseVisitor[AnyRef] with Logging 
           case _ => Inner
         }
 
-        // Resolve the join type and join condition
-        val (joinType, condition) = Option(join.joinCriteria) match {
+        // add knn join case
+        Option(join.joinCriteria) match {
+          case Some(c) if c.USING != null && c.POINT != null =>
+            SpatialJoin(left, plan(join.right), KNNJoin, Option(expression(c.booleanExpression)))
           case Some(c) if c.USING != null =>
-            (UsingJoin(baseJoinType, visitIdentifierList(c.identifierList)), None)
+            Join(
+              left,
+              plan(join.right),
+              UsingJoin(baseJoinType, c.identifier.asScala.map(_.getText)),
+              None,
+              JoinHint.NONE)
+
           case Some(c) if c.booleanExpression != null =>
-            (baseJoinType, Option(expression(c.booleanExpression)))
+            Join(left, plan(join.right), baseJoinType, Option(expression(c.booleanExpression)), JoinHint.NONE)
           case None if join.NATURAL != null =>
             if (baseJoinType == Cross) {
               throw new ParseException("NATURAL CROSS JOIN is not supported", ctx)
             }
-            (NaturalJoin(baseJoinType), None)
+            Join(left, plan(join.right), NaturalJoin(baseJoinType), None, JoinHint.NONE)
           case None =>
-            (baseJoinType, None)
+            Join(left, plan(join.right), baseJoinType, None, JoinHint.NONE)
         }
-        Join(left, plan(join.right), joinType, condition, JoinHint.NONE)
       }
     }
   }
@@ -1350,6 +1356,15 @@ class AstBuilder(conf: SQLConf) extends SqlBaseBaseVisitor[AnyRef] with Logging 
       withPredicate(e, ctx.predicate)
     } else {
       e
+    }
+  }
+  // customized visit rule by czp
+  override def visitSpatialpredicated(ctx: SpatialpredicatedContext) : Expression = withOrigin(ctx) {
+    val e = expression(ctx.valueExpression)
+    ctx.kind.getType match{
+      case SqlBaseParser.KNNPRED =>
+        PredKnn(ctx.myexpressionlist1.expression.asScala.map(expression),
+          ctx.myexpressionlist2.expression.asScala.map(expression),e)
     }
   }
 

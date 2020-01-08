@@ -605,10 +605,12 @@ joinType
     | RIGHT OUTER?
     | FULL OUTER?
     | LEFT? ANTI
+    | KNN
     ;
 
 joinCriteria
     : ON booleanExpression
+    | USING ('(' identifier (',' identifier)* ')' | POINT booleanExpression )
     | USING identifierList
     ;
 
@@ -738,6 +740,18 @@ predicate
     | IS NOT? kind=NULL
     | IS NOT? kind=(TRUE | FALSE | UNKNOWN)
     | IS NOT? kind=DISTINCT FROM right=valueExpression
+    ;
+
+myexpressionlist1
+    : '(' expression (',' expression)* ')'
+    ;
+
+myexpressionlist2
+    : '(' expression (',' expression)* ')'
+    ;
+
+spatialpredicated
+    : myexpressionlist1 kind=KNNPRED '(' POINT myexpressionlist2 ',' valueExpression ')'
     ;
 
 valueExpression
@@ -1205,6 +1219,7 @@ strictNonReserved
     | SETMINUS
     | UNION
     | USING
+    | KNN
     ;
 
 nonReserved
@@ -1733,6 +1748,9 @@ WINDOW: 'WINDOW';
 WITH: 'WITH';
 YEAR: 'YEAR';
 YEARS: 'YEARS';
+KNN: 'KNN';
+POINT: 'POINT';
+KNNPRED: 'KNNPRED';
 //============================
 // End of the keywords list
 //============================
