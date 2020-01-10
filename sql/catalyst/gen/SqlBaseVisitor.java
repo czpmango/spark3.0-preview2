@@ -1,5 +1,4 @@
-// Generated from org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.1
-package org.apache.spark.sql.catalyst.parser;
+// Generated from /home/czp/workspace/Demo2/sql/catalyst/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -1174,12 +1173,6 @@ public interface SqlBaseVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPredicate(SqlBaseParser.PredicateContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SqlBaseParser#spatialpredicated}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link SqlBaseParser#myexpressionlist1}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -1191,6 +1184,12 @@ public interface SqlBaseVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMyexpressionlist2(SqlBaseParser.Myexpressionlist2Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link SqlBaseParser#spatialpredicated}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code valueExpressionDefault}
 	 * labeled alternative in {@link SqlBaseParser#valueExpression}.

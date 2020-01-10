@@ -953,7 +953,7 @@ class AstBuilder(conf: SQLConf) extends SqlBaseBaseVisitor[AnyRef] with Logging 
           case _ => Inner
         }
 
-        // add knn join case
+        // add knn join case handler by czp.
         Option(join.joinCriteria) match {
           case Some(c) if c.USING != null && c.POINT != null =>
             SpatialJoin(left, plan(join.right), KNNJoin, Option(expression(c.booleanExpression)))

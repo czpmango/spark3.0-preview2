@@ -1,5 +1,4 @@
-// Generated from org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.1
-package org.apache.spark.sql.catalyst.parser;
+// Generated from /home/czp/workspace/Demo2/sql/catalyst/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -1263,13 +1262,6 @@ public class SqlBaseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitMyexpressionlist1(SqlBaseParser.Myexpressionlist1Context ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -1278,6 +1270,13 @@ public class SqlBaseBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitMyexpressionlist2(SqlBaseParser.Myexpressionlist2Context ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

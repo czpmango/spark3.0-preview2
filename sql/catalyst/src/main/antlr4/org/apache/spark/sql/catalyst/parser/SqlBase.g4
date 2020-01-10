@@ -742,16 +742,16 @@ predicate
     | IS NOT? kind=DISTINCT FROM right=valueExpression
     ;
 
+spatialpredicated
+    : myexpressionlist1 kind=KNNPRED '(' POINT myexpressionlist2 ',' valueExpression ')'
+    ;
+
 myexpressionlist1
     : '(' expression (',' expression)* ')'
     ;
 
 myexpressionlist2
     : '(' expression (',' expression)* ')'
-    ;
-
-spatialpredicated
-    : myexpressionlist1 kind=KNNPRED '(' POINT myexpressionlist2 ',' valueExpression ')'
     ;
 
 valueExpression

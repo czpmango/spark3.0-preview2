@@ -1,5 +1,4 @@
-// Generated from org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.1
-package org.apache.spark.sql.catalyst.parser;
+// Generated from /home/czp/workspace/Demo2/sql/catalyst/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -1978,16 +1977,6 @@ public interface SqlBaseListener extends ParseTreeListener {
 	 */
 	void exitPredicate(SqlBaseParser.PredicateContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SqlBaseParser#spatialpredicated}.
-	 * @param ctx the parse tree
-	 */
-	void enterSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SqlBaseParser#spatialpredicated}.
-	 * @param ctx the parse tree
-	 */
-	void exitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link SqlBaseParser#myexpressionlist1}.
 	 * @param ctx the parse tree
 	 */
@@ -2007,6 +1996,16 @@ public interface SqlBaseListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMyexpressionlist2(SqlBaseParser.Myexpressionlist2Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link SqlBaseParser#spatialpredicated}.
+	 * @param ctx the parse tree
+	 */
+	void enterSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SqlBaseParser#spatialpredicated}.
+	 * @param ctx the parse tree
+	 */
+	void exitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code valueExpressionDefault}
 	 * labeled alternative in {@link SqlBaseParser#valueExpression}.

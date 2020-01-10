@@ -1,5 +1,4 @@
-// Generated from org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.1
-package org.apache.spark.sql.catalyst.parser;
+// Generated from /home/czp/workspace/Demo2/sql/catalyst/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4 by ANTLR 4.7.2
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -2152,18 +2151,6 @@ public class SqlBaseBaseListener implements SqlBaseListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMyexpressionlist1(SqlBaseParser.Myexpressionlist1Context ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -2183,6 +2170,18 @@ public class SqlBaseBaseListener implements SqlBaseListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMyexpressionlist2(SqlBaseParser.Myexpressionlist2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSpatialpredicated(SqlBaseParser.SpatialpredicatedContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
